@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tecer — Operações Financeiras Autônomas</title>
+  <meta name="description" content="Tecer transforma operações financeiras em inteligência autônoma. Reconciliação, categorização, análise de custos e fechamento mensal rodam sozinhos — o sistema fica mais afiado a cada ciclo.">
+
+  <!-- OG Tags -->
+  <meta property="og:title" content="Tecer — Operações Financeiras Autônomas">
+  <meta property="og:description" content="Seu fechamento é só mais uma terça-feira. Reconciliação, categorização, análise de custos e fechamento mensal autônomos.">
+  <meta property="og:image" content="https://tecer.ai/assets/og-tecer.png">
+  <meta property="og:url" content="https://tecer.ai">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tecer — Operações Financeiras Autônomas">
+  <meta name="twitter:description" content="Seu fechamento é só mais uma terça-feira.">
+  <meta name="twitter:image" content="https://tecer.ai/assets/og-tecer.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/tecer-wordmark-no-bg.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ============================================
+       DESIGN TOKENS
+       ============================================ */
+    :root {
+      --deep-navy: #1B2B4B;
+      --trust-blue: #2B5EA7;
+      --growth-green: #2D7D6B;
+      --muted-copper: #B8875A;
+      --warm-cream: #F5EDE4;
+      --soft-gray: #F7F8FA;
+      --slate: #4A5568;
+      --white: #FFFFFF;
+      --red-pain: #C53030;
+
+      --font-primary: 'Outfit', sans-serif;
+      --font-data: 'Space Mono', monospace;
+
+      --radius: 10px;
+      --shadow-card: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-elevated: 0 4px 16px rgba(0,0,0,0.10);
+
+      --section-padding: 5rem 1.5rem;
+      --max-width: 1100px;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-primary);
+      font-weight: 400;
+      color: var(--slate);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: var(--trust-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ============================================
+       UTILITIES
+       ============================================ */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .kicker {
+      font-family: var(--font-primary);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--trust-blue);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-primary);
+      font-weight: 600;
+      font-size: 2rem;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--slate);
+      max-width: 640px;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2rem;
+      background: var(--trust-blue);
+      color: var(--white);
+      font-family: var(--font-primary);
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+      min-height: 48px;
+    }
+    .btn-primary:hover {
+      background: #234d8a;
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    .data-text {
+      font-family: var(--font-data);
+      font-weight: 700;
+    }
+
+    /* ============================================
+       SCROLL ANIMATIONS
+       ============================================ */
+    .js-animations .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .js-animations .animate-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js-animations .animate-on-scroll {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    /* ============================================
+       LANGUAGE TOGGLE
+       ============================================ */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 3px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .lang-toggle span {
+      padding: 4px 12px;
+      border-radius: 16px;
+      transition: background 0.2s, color 0.2s;
+      user-select: none;
+    }
+    .lang-toggle span.active {
+      background: var(--white);
+      color: var(--deep-navy);
+    }
+    .lang-toggle span:not(.active) {
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ============================================
+       HEADER / HERO
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: var(--deep-navy);
+      background-image: url('assets/bg-dark-threads.webp');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(27,43,75,0.75);
+    }
+
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero .kicker {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero .section-title {
+      color: var(--white);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-stat {
+      font-family: var(--font-data);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.02em;
+    }
+    .hero-stat .highlight {
+      color: var(--growth-green);
+      font-weight: 700;
+    }
+
+    /* ============================================
+       STICKY CTA BAR
+       ============================================ */
+    .sticky-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--deep-navy);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0.6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.3s ease;
+      backdrop-filter: blur(12px);
+    }
+    .sticky-bar .wordmark {
+      height: 20px;
+      filter: brightness(0) invert(1);
+    }
+    .sticky-bar .btn-primary {
+      padding: 0.5rem 1.25rem;
+      font-size: 0.85rem;
+      min-height: 36px;
+    }
+    .sticky-bar .lang-toggle {
+      font-size: 0.7rem;
+      margin-right: 0.75rem;
+    }
+    .sticky-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ============================================
+       TRANSFORMATION SECTION
+       ============================================ */
+    .transformation {
+      background: var(--soft-gray);
+      padding: var(--section-padding);
+    }
+
+    .transformation .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .transform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .transform-col {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .transform-col-header {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid;
+    }
+
+    .col-before .transform-col-header {
+      color: var(--red-pain);
+      border-color: var(--red-pain);
+    }
+    .col-after .transform-col-header {
+      color: var(--growth-green);
+      border-color: var(--growth-green);
+    }
+
+    .transform-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .transform-item:last-child { margin-bottom: 0; }
+
+    .transform-item i {
+      flex-shrink: 0;
+      margin-top: 3px;
+      font-size: 0.85rem;
+    }
+    .col-before .transform-item i { color: var(--red-pain); }
+    .col-after .transform-item i { color: var(--growth-green); }
+
+    .transform-item .data-text {
+      font-size: 0.8rem;
+      color: var(--red-pain);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       HOW IT WORKS
+       ============================================ */
+    .how-it-works {
+      background: var(--white);
+      padding: var(--section-padding);
+    }
+
+    .how-it-works .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+    }
+
+    .step-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-size: 1.4rem;
+    }
+    .icon-circle.blue { background: rgba(43,94,167,0.1); color: var(--trust-blue); }
+    .icon-circle.green { background: rgba(45,125,107,0.1); color: var(--growth-green); }
+    .icon-circle.copper { background: rgba(184,135,90,0.1); color: var(--muted-copper); }
+
+    .step-number {
+      font-family: var(--font-data);
+      font-size: 0.7rem;
+      color: rgba(74,85,104,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--deep-navy);
+      margin-bottom: 0.5rem;
+    }
+
+    .step-desc {
+      font-size: 0.9rem;
+      color: var(--slate);
+      line-height: 1.5;
+    }
+
+    .step-arrow {
+      display: none;
+    }
+
+    .pull-quote {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      border-left: 3px solid var(--trust-blue);
+      background: var(--soft-gray);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 1rem;
+      color: var(--deep-navy);
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       GLORIA SECTION
+       ============================================ */
+    .gloria {
+      background-color: var(--warm-cream);
+      background-image: url('assets/bg-warm-threads.webp');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      padding: var(--section-padding);
+    }
+    .gloria::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(245,237,228,0.88);
+    }
+
+    .gloria-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .gloria .kicker { color: var(--muted-copper); }
+
+    .gloria .section-title {
+      color: var(--deep-navy);
+    }
+
+    .gloria .section-subtitle {
+      margin: 0 auto 2.5rem;
+    }
+
+    .badge-coming-soon {
+      display: inline-block;
+      background: rgba(184,135,90,0.15);
+      color: var(--muted-copper);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.35rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+    }
+
+    .gloria-visual {
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .chat-bubble {
+      padding: 1rem 1.25rem;
+      border-radius: 16px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+      text-align: left;
+      box-shadow: var(--shadow-card);
+    }
+    .chat-bubble.question {
+      background: var(--white);
+      color: var(--deep-navy);
+      border-bottom-left-radius: 4px;
+      margin-right: 2rem;
+    }
+    .chat-bubble.answer {
+      background: var(--deep-navy);
+      color: var(--white);
+      border-bottom-right-radius: 4px;
+      margin-left: 2rem;
+    }
+.chat-bubble .bubble-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.5;
+      margin-bottom: 0.25rem;
+    }
+
+    /* ============================================
+       CTA / WAITLIST
+       ============================================ */
+    .cta-section {
+      position: relative;
+      background-color: var(--deep-navy);
+      background-image: url('assets/bg-dark-threads.webp');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      padding: var(--section-padding);
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(27,43,75,0.8);
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 560px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-section .section-title { color: var(--white); }
+    .cta-section .section-subtitle {
+      color: rgba(255,255,255,0.7);
+      margin: 0 auto 2rem;
+    }
+
+    .waitlist-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 460px;
+      margin: 0 auto 1rem;
+    }
+
+    .waitlist-form input[type="email"] {
+      flex: 1;
+      padding: 0.9rem 1rem;
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+      font-family: var(--font-primary);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      min-height: 48px;
+    }
+    .waitlist-form input[type="email"]::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+    .waitlist-form input[type="email"]:focus {
+      border-color: var(--trust-blue);
+    }
+
+    .waitlist-form .btn-primary { white-space: nowrap; }
+
+    .form-disclaimer {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .form-error {
+      color: #FC8181;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .form-success {
+      display: none;
+      padding: 2rem;
+      text-align: center;
+    }
+    .form-success i {
+      font-size: 2.5rem;
+      color: var(--growth-green);
+      margin-bottom: 1rem;
+    }
+    .form-success h3 {
+      font-size: 1.25rem;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .form-success p {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--deep-navy);
+      color: rgba(255,255,255,0.5);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-wordmark {
+      height: 20px;
+      margin: 0 auto 1rem;
+      opacity: 0.6;
+      filter: brightness(0) invert(1);
+    }
+
+    .footer-contacts {
+      margin-bottom: 0.75rem;
+    }
+    .footer-contacts a {
+      color: rgba(255,255,255,0.5);
+      margin: 0 0.5rem;
+      transition: color 0.2s;
+    }
+    .footer-contacts a:hover { color: var(--white); text-decoration: none; }
+
+    .footer-social {
+      margin-bottom: 1rem;
+    }
+    .footer-social a {
+      color: rgba(255,255,255,0.4);
+      font-size: 1.1rem;
+      margin: 0 0.5rem;
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: var(--white); }
+
+    /* ============================================
+       RESPONSIVE: TABLET (768px+)
+       ============================================ */
+    @media (min-width: 768px) {
+      .hero .section-title { font-size: 3rem; }
+      .section-title { font-size: 2.25rem; }
+      .hero-stat { font-size: 1.25rem; }
+    }
+
+    /* ============================================
+       RESPONSIVE: DESKTOP (1200px+)
+       ============================================ */
+    @media (min-width: 1200px) {
+      .hero .section-title { font-size: 3.5rem; }
+      .section-title { font-size: 2.5rem; }
+      :root { --section-padding: 6rem 2rem; }
+    }
+
+    /* ============================================
+       RESPONSIVE: MOBILE ADJUSTMENTS
+       ============================================ */
+    @media (max-width: 767px) {
+      .transform-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .waitlist-form { flex-direction: column; }
+      .waitlist-form .btn-primary { width: 100%; }
+      .hero-nav { padding: 1rem 1.25rem; }
+      .hero-content { padding: 5rem 1.25rem 3rem; }
+      .sticky-bar { padding: 0.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       STICKY CTA BAR
+       ============================================ -->
+  <div class="sticky-bar" id="stickyBar" aria-hidden="true">
+    <img src="assets/tecer-wordmark-no-bg.png" alt="Tecer" class="wordmark">
+    <div class="sticky-bar-right">
+      <div class="lang-toggle" id="langToggleSticky" role="button" aria-label="Switch language">
+        <span class="active" data-lang="pt">PT</span>
+        <span data-lang="en">EN</span>
+      </div>
+      <a href="#waitlist" class="btn-primary">
+        <span data-lang-pt="Entrar na lista" data-lang-en="Join the waitlist"></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <p class="kicker" data-lang-pt="OPERAÇÕES FINANCEIRAS AUTÔNOMAS" data-lang-en="AUTONOMOUS FINANCE OPERATIONS"></p>
+      <h1 class="section-title" data-lang-pt="Seu fechamento é só mais uma terça-feira." data-lang-en="Your close is just another Tuesday."></h1>
+      <p class="hero-stat">
+        <span data-lang-pt="6–10 dias após o fechamento → " data-lang-en="6–10 days after month close → "></span>
+        <span class="highlight" data-lang-pt="tempo real" data-lang-en="real time"></span>
+      </p>
+      <a href="#waitlist" class="btn-primary" data-lang-pt="Entrar na lista de espera" data-lang-en="Join the waitlist">
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================
+       TRANSFORMATION
+       ============================================ -->
+  <section class="transformation" id="transformation">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <p class="kicker" data-lang-pt="A TRANSFORMAÇÃO" data-lang-en="THE TRANSFORMATION"></p>
+        <h2 class="section-title" data-lang-pt="De operar finanças para liderar finanças." data-lang-en="From running finance operations to overseeing them."></h2>
+      </div>
+
+      <div class="transform-grid">
+        <div class="transform-col col-before animate-on-scroll">
+          <div class="transform-col-header" data-lang-pt="Antes" data-lang-en="Before"></div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-xmark"></i>
+            <div>
+              <span data-lang-pt="CFO gasta metade do tempo em operação, não em estratégia" data-lang-en="CFO spends half their time on operations, not strategy"></span>
+              <span class="data-text">30–50%</span>
+            </div>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-xmark"></i>
+            <div>
+              <span data-lang-pt="Turnover alto e conhecimento institucional perdido" data-lang-en="High turnover and institutional knowledge lost"></span>
+              <span class="data-text">15–25%</span>
+            </div>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-xmark"></i>
+            <span data-lang-pt="Erros manuais em reconciliação descobertos só no fechamento" data-lang-en="Manual reconciliation errors found only at month-end close"></span>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-xmark"></i>
+            <span data-lang-pt="Custos escondidos que ninguém está monitorando ativamente" data-lang-en="Hidden costs that no one is actively monitoring"></span>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-xmark"></i>
+            <span data-lang-pt="Fechamento manual de 6 a 15+ dias, todo mês" data-lang-en="Manual close taking 6 to 15+ days, every month"></span>
+          </div>
+        </div>
+
+        <div class="transform-col col-after animate-on-scroll">
+          <div class="transform-col-header" data-lang-pt="Com a Tecer" data-lang-en="With Tecer"></div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-check"></i>
+            <span data-lang-pt="CFO lidera estratégia enquanto o sistema opera" data-lang-en="CFO leads strategy while the system operates"></span>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-check"></i>
+            <span data-lang-pt="Conhecimento institucional composto a cada transação" data-lang-en="Institutional knowledge compounded with every transaction"></span>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-check"></i>
+            <span data-lang-pt="Reconciliação contínua — erros detectados no mesmo dia" data-lang-en="Continuous reconciliation — errors caught the same day"></span>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-check"></i>
+            <span data-lang-pt="Análise de custos proativa que encontra vazamentos antes de você" data-lang-en="Proactive cost analysis that finds leaks before you do"></span>
+          </div>
+
+          <div class="transform-item">
+            <i class="fa-solid fa-check"></i>
+            <span data-lang-pt="Fechamento autônomo — é só mais uma terça-feira" data-lang-en="Autonomous close — it's just another Tuesday"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       HOW IT WORKS
+       ============================================ -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <p class="kicker" data-lang-pt="COMO FUNCIONA" data-lang-en="HOW IT WORKS"></p>
+        <h2 class="section-title" data-lang-pt="Inteligência que se compõe a cada transação." data-lang-en="Intelligence that compounds with every transaction."></h2>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card animate-on-scroll">
+          <div class="icon-circle blue">
+            <i class="fa-solid fa-plug"></i>
+          </div>
+          <div class="step-number" data-lang-pt="Passo 01" data-lang-en="Step 01"></div>
+          <h3 class="step-title" data-lang-pt="Conecte" data-lang-en="Connect"></h3>
+          <p class="step-desc" data-lang-pt="Contas bancárias, email, Slack, Google Workspace — Tecer se integra aos seus sistemas." data-lang-en="Bank accounts, email, Slack, Google Workspace — Tecer integrates with your systems."></p>
+        </div>
+
+        <div class="step-card animate-on-scroll">
+          <div class="icon-circle green">
+            <i class="fa-solid fa-gears"></i>
+          </div>
+          <div class="step-number" data-lang-pt="Passo 02" data-lang-en="Step 02"></div>
+          <h3 class="step-title" data-lang-pt="Tecer opera" data-lang-en="Tecer operates"></h3>
+          <p class="step-desc" data-lang-pt="Reconciliação, categorização, análise de custos e fechamento rodam autonomamente." data-lang-en="Reconciliation, categorization, cost analysis, and close run autonomously."></p>
+        </div>
+
+        <div class="step-card animate-on-scroll">
+          <div class="icon-circle copper">
+            <i class="fa-solid fa-eye"></i>
+          </div>
+          <div class="step-number" data-lang-pt="Passo 03" data-lang-en="Step 03"></div>
+          <h3 class="step-title" data-lang-pt="Você supervisiona" data-lang-en="You oversee"></h3>
+          <p class="step-desc" data-lang-pt="Revisão de exceções via Slack, respostas instantâneas — decisão humana onde importa." data-lang-en="Exception review via Slack, instant answers — human judgment where it matters."></p>
+        </div>
+      </div>
+
+      <div class="pull-quote animate-on-scroll">
+        <span data-lang-pt="&ldquo;Seus números estão certos — não porque alguém conferiu, mas porque o sistema já sabe.&rdquo;" data-lang-en="&ldquo;Your numbers are right — not because someone checked, but because the system already knows.&rdquo;"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       GLORIA SECTION
+       ============================================ -->
+  <section class="gloria" id="gloria">
+    <div class="gloria-inner">
+      <span class="badge-coming-soon" data-lang-pt="Em breve" data-lang-en="Coming soon"></span>
+      <p class="kicker" data-lang-pt="CONHEÇA A GLORIA" data-lang-en="MEET GLORIA"></p>
+      <h2 class="section-title" data-lang-pt="Faça qualquer pergunta financeira. Receba a resposta em segundos." data-lang-en="Ask any financial question. Get an answer in seconds."></h2>
+      <p class="section-subtitle" data-lang-pt="Gloria é a assistente financeira com IA que conhece os dados da sua empresa — histórico de transações, fornecedores, padrões de custo. Pergunte em linguagem natural." data-lang-en="Gloria is the AI finance assistant that knows your company's data — transaction history, vendors, cost patterns. Ask in natural language."></p>
+
+      <div class="gloria-visual animate-on-scroll">
+        <div class="chat-bubble question">
+          <div class="bubble-label">CFO</div>
+          <span data-lang-pt="Quanto pagamos ao fornecedor X nos últimos 6 meses?" data-lang-en="How much did we pay vendor X in the last 6 months?"></span>
+        </div>
+        <div class="chat-bubble answer">
+          <div class="bubble-label">Gloria</div>
+          <span data-lang-pt="R$ 284.320 em 23 transações. Aumento de 12% vs. semestre anterior." data-lang-en="R$ 284,320 across 23 transactions. 12% increase vs. previous half."></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CTA / WAITLIST
+       ============================================ -->
+  <section class="cta-section" id="waitlist">
+    <div class="cta-inner">
+      <h2 class="section-title animate-on-scroll" data-lang-pt="Seja um dos primeiros." data-lang-en="Be one of the first."></h2>
+      <p class="section-subtitle animate-on-scroll" data-lang-pt="Operações financeiras autônomas estão chegando. Entre na lista de espera e saiba quando abrirmos vagas." data-lang-en="Autonomous finance operations are coming. Join the waitlist and be the first to know."></p>
+
+      <div id="waitlistForm" class="animate-on-scroll">
+        <!-- Google Forms: replace FORM_ID and ENTRY_ID after creating the form -->
+        <form class="waitlist-form" action="https://docs.google.com/forms/d/e/1FAIpQLSeV5qEY62X0h7laA5VbyoCwnGaBPGBc6k50LO0Quk0ntwqkWg/formResponse" method="POST" id="emailForm" target="hidden_iframe" novalidate>
+          <input type="email" name="entry.263194313" required
+            data-lang-pt-placeholder="seu@email.com"
+            data-lang-en-placeholder="your@email.com"
+            placeholder="seu@email.com"
+            autocomplete="email">
+          <button type="submit" class="btn-primary" data-lang-pt="Entrar" data-lang-en="Join"></button>
+        </form>
+        <p class="form-error" id="formError" data-lang-pt="Por favor, insira um email válido." data-lang-en="Please enter a valid email."></p>
+        <p class="form-disclaimer" data-lang-pt="Sem spam. Sem compromisso." data-lang-en="No spam. No commitment."></p>
+      </div>
+
+      <div class="form-success" id="formSuccess">
+        <i class="fa-solid fa-circle-check"></i>
+        <h3 data-lang-pt="Obrigado!" data-lang-en="Thank you!"></h3>
+        <p data-lang-pt="Entraremos em contato em breve." data-lang-en="We'll be in touch soon."></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <img src="assets/tecer-wordmark-no-bg.png" alt="Tecer" class="footer-wordmark">
+    <div class="footer-contacts">
+      <a href="mailto:contato@tecer.ai">contato@tecer.ai</a>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.linkedin.com/company/tecer-ai/" target="_blank" rel="noopener" aria-label="Tecer LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="https://github.com/tecer-ai" target="_blank" rel="noopener" aria-label="Tecer GitHub"><i class="fa-brands fa-github"></i></a>
+    </div>
+    <p>&copy; 2026 Tecer</p>
+  </footer>
+
+  <!-- Hidden iframe for Google Forms submission (prevents redirect) -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+  <!-- ============================================
+       JAVASCRIPT
+       ============================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // --- Language System ---
+      const LANG_KEY = 'tecer-lang';
+
+      function detectLang() {
+        const stored = localStorage.getItem(LANG_KEY);
+        if (stored) return stored;
+        return navigator.language.startsWith('en') ? 'en' : 'pt';
+      }
+
+      let currentLang = detectLang();
+
+      function applyLang(lang) {
+        currentLang = lang;
+        localStorage.setItem(LANG_KEY, lang);
+        document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+
+        document.querySelectorAll('[data-lang-pt]').forEach(function(el) {
+          var ptText = el.getAttribute('data-lang-pt');
+          var enText = el.getAttribute('data-lang-en');
+          if (ptText !== null && enText !== null) {
+            el.textContent = lang === 'pt' ? ptText : enText;
+          }
+        });
+
+        document.querySelectorAll('[data-lang-pt-placeholder]').forEach(function(el) {
+          el.placeholder = lang === 'pt'
+            ? el.getAttribute('data-lang-pt-placeholder')
+            : el.getAttribute('data-lang-en-placeholder');
+        });
+
+        document.querySelectorAll('.lang-toggle').forEach(function(toggle) {
+          toggle.querySelectorAll('span').forEach(function(s) {
+            s.classList.toggle('active', s.getAttribute('data-lang') === lang);
+          });
+        });
+      }
+
+      document.querySelectorAll('.lang-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+          applyLang(currentLang === 'pt' ? 'en' : 'pt');
+        });
+      });
+
+      applyLang(currentLang);
+
+
+      // --- Scroll Animations ---
+      var animEls = document.querySelectorAll('.animate-on-scroll');
+      var motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (motionOk && animEls.length) {
+        document.body.classList.add('js-animations');
+        var animObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              animObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        animEls.forEach(function(el) { animObserver.observe(el); });
+      }
+
+      // --- Form Handling ---
+      var form = document.getElementById('emailForm');
+      var formError = document.getElementById('formError');
+      var formContainer = document.getElementById('waitlistForm');
+      var formSuccess = document.getElementById('formSuccess');
+
+      form.addEventListener('submit', function(e) {
+        var email = form.querySelector('input[type="email"]').value.trim();
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email || !emailRegex.test(email)) {
+          e.preventDefault();
+          formError.style.display = 'block';
+          return;
+        }
+
+        formError.style.display = 'none';
+        // Form submits to hidden iframe (Google Forms); show success after brief delay
+        setTimeout(function() {
+          formContainer.style.display = 'none';
+          formSuccess.style.display = 'block';
+        }, 500);
+      });
+    })();
+  </script>
+</body>
+</html>
